@@ -19,7 +19,6 @@ train_df = train_df.merge(train_labels_df, on='user_id', how='left')
 train_df = train_df.merge(referer_vectors_df, on='referer', how='left')
 train_df = train_df.merge(geo_info_df, on='geo_id', how='left')
 print("Все таблицы объединены")
-
 # Функция для разбора user_agent. Она извлекает browser и os из user_agent
 def from_user_agent(x):
     try:
@@ -61,6 +60,7 @@ def safe_mode(x):
 
 # Заполнение пустых полей в region_id
 train_df['region_id'] = train_df['region_id'].fillna('unknown')
+print("Преобразование фичей завершено. Далее начинается агрегация по пользователям. Займет чуть больше 5 минут")
 
 # Группировка данных по user_id и вычисление всех признаков
 user_features = train_df.groupby('user_id').agg({
@@ -76,7 +76,7 @@ user_features = train_df.groupby('user_id').agg({
     'component9': 'mean',
     'request_ts': 'count', # Подсчет количества запросов пользователя
     'referer': lambda x: safe_mode(x), # Самый частый referer (URL, где показывается реклама)
-    'geo_id': lambda x: safe_mode(x), # Самыая частая геолокация
+    'geo_id': lambda x: safe_mode(x), # Самая частая геолокация
     'hour': 'mean', # Средний час активности пользователя
     'day_of_week': 'mean', # Средний день недели активности пользователя
     'browser': lambda x: safe_mode(x), # Самый частый браузер
@@ -86,7 +86,7 @@ user_features = train_df.groupby('user_id').agg({
     'timezone_id': lambda x: safe_mode(x), # Самый частый часовой пояс
     'target': 'first' # Целевая переменная, берется первое значение
 }).reset_index()
-print("Агрегация по пользователю завершена")
+print("Агрегация по пользователям завершена")
 
 # Удаление строк с пропущенными целевыми значениями
 user_features = user_features.dropna(subset=['target'])
