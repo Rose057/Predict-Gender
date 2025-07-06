@@ -115,9 +115,9 @@ print("Модель обучена")
 joblib.dump(model, 'random_forest_model.joblib')
 print("Модель сохранена в файл random_forest_model.joblib")
 
-# # Оценка качества модели через roc_auc_score
+# # Оценка качества модели с помощью roc_auc_score
 # from sklearn.metrics import roc_auc_score
-# 
-# y_pred1 = model.predict_proba(X_val)[:, 1]
-# auc = roc_auc_score(y_val, y_pred1)
-# print(f"на валидационной выборке: {auc:.4f}")
+#
+# y_pred = model.predict_proba(X_val)[:, 1]
+# auc = roc_auc_score(y_val, y_pred)
+# print(f"Точность на валидационной выборке: {auc:.4f}")
