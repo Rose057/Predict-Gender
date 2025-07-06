@@ -56,6 +56,7 @@ def safe_mode(x):
 
 # Заполнение пустых полей в region_id
 test_df['region_id'] = test_df['region_id'].fillna('unknown')
+print("Преобразование фичей завершено. Далее начинается агрегация по пользователям. Займет несколько минут")
 
 # Группировка данных по user_id и вычисление всех признаков
 user_features = test_df.groupby('user_id').agg({
@@ -110,7 +111,7 @@ preds_df = pd.DataFrame({
 # Сортировка пользователей по тому порядку, который был в test_users.csv
 preds_df = preds_df.set_index('user_id').loc[test_users_df['user_id']].reset_index()
 
-# Сохранение всех рузельтатов в файл preds.csv
+# Сохранение всех результатов в файл preds.csv
 preds_df.to_csv('preds.csv', sep=';', index=False)
 print("Файл preds.csv сохранен")
 
